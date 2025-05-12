@@ -1,6 +1,8 @@
 import cv2 
 import numpy as np
 import matplotlib.pyplot as plt
+from numpy.ma.core import indices
+
 
 def main():
     image = cv2.imread("image/cameraman.png", cv2.IMREAD_GRAYSCALE)
@@ -14,8 +16,8 @@ def main():
     GaussianFilter(image)
 
 
-def GaussianFilter(image: np.ndarray) -> np.ndarray:
-    # to do
+def GaussianFilter(image: np.ndarray, kernel_size: int, sigma: float) -> np.ndarray:
+
 
 if __name__ == "__main__":
     main()
