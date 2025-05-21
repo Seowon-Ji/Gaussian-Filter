@@ -36,15 +36,23 @@ def GaussianFilter(image: np.ndarray, width: int, sigma: float) -> np.ndarray:
     kernel /= kernel.sum()
 
     image_row, image_col = image.shape
-    output_image = np.zeros((image_row, image_col))
-    padding = width//2
+    # output_image = np.zeros((image_row, image_col))
+    # padding = width//2
 
-    padded_image = np.zeros((image_row + 2*padding, image_col + 2*padding))
-    padded_image[padding:padded_image.shape[0]-padding,  padding:padded_image.shape[1]-padding] = image
+    # padded_image = np.zeros((image_row + 2*padding, image_col + 2*padding))
+    # padded_image[padding:padded_image.shape[0]-padding,  padding:padded_image.shape[1]-padding] = image
+
+    output_image = np.zeros((image_row, image_col))
 
     for i in range(image_row):
         for j in range(image_col):
-            output_image[i,j] = np.sum(kernel * padded_image[i:i+width, j:j+width])
+            val = 0.0
+            for m in range(-center, center+1):
+                for n in range(-center, center+1):
+                    x = min(max(i+m, 0), image_row-1)
+                    y = min(max(j+n, 0), image_col-1)
+                    val += kernel[m+center, n+center] * image[x,y]
+            output_image[i,j] = val
 
     output_image = np.clip(output_image, 0, 255).astype(image.dtype)
 
