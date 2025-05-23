@@ -1,4 +1,4 @@
-import cv2 
+import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -16,6 +16,7 @@ def main():
 
 def GaussianFilter(image: np.ndarray) -> np.ndarray:
     # to do
+    pass
 
 if __name__ == "__main__":
     main()
