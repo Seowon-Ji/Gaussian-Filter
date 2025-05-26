@@ -51,6 +51,43 @@ def GaussianFilter_JY(image: np.ndarray, kernel_size: int, sigma: float) -> np.n
     output_image = np.clip(output_image, 0, 255)
     output_image = output_image.astype(image.dtype)
 
+def GaussianFilter_SJ(image: np.ndarray, width: int, sigma: float) -> np.ndarray:
+    center = width//2
+
+    # Create filter size array
+    kernel = np.zeros((width, width))
+
+    for i in range(width):
+        for j in range(width):
+            x = i-center
+            y= j-center
+            kernel[i,j] = x**2 + y**2
+
+    kernel /= 2*sigma**2
+    kernel = np.exp(-kernel)
+    kernel /= kernel.sum()
+
+    image_row, image_col = image.shape
+    # output_image = np.zeros((image_row, image_col))
+    # padding = width//2
+
+    # padded_image = np.zeros((image_row + 2*padding, image_col + 2*padding))
+    # padded_image[padding:padded_image.shape[0]-padding,  padding:padded_image.shape[1]-padding] = image
+
+    output_image = np.zeros((image_row, image_col))
+
+    for i in range(image_row):
+        for j in range(image_col):
+            val = 0.0
+            for m in range(-center, center+1):
+                for n in range(-center, center+1):
+                    x = min(max(i+m, 0), image_row-1)
+                    y = min(max(j+n, 0), image_col-1)
+                    val += kernel[m+center, n+center] * image[x,y]
+            output_image[i,j] = val
+
+    output_image = np.clip(output_image, 0, 255).astype(image.dtype)
+
     return output_image
 
 if __name__ == "__main__":
