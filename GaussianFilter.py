@@ -12,8 +12,8 @@ def main():
 
     kernel_size = 5
     sigma = 2
-    filtered_image = GaussianFilter_JY(image, kernel_size, sigma)
-    cv2.imshow(f"Filtered Image (k = {kernel_size}, sigma = {sigma})", filtered_image)
+    # filtered_image = GaussianFilter_JY(image, kernel_size, sigma)
+    # cv2.imshow(f"Filtered Image (k = {kernel_size}, sigma = {sigma})", filtered_image)
     filtered_image_cv = cv2.GaussianBlur(image, (kernel_size, kernel_size), sigma)
     cv2.imshow(f"OpenCV GaussianBlur (k = {kernel_size}, s = {sigma})", filtered_image_cv)
 
@@ -24,17 +24,6 @@ def GaussianFilter_JY(image: np.ndarray, kernel_size: int, sigma: float) -> np.n
     # 커널 한 변 길이 검증
     if kernel_size % 2 == 0 or kernel_size <= 0:
         raise ValueError("Kernel size must be odd.")
-    #cv2.imshow("OpenCV Test", image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
-    # Gaussian Filter
-    filtered_img = GaussianFilter(image, 5, 1)
-
-    # Print Filtered Image
-    cv2.imshow("Filtered Image", filtered_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
 
     # Gaussian 커널 생성
     radius = kernel_size // 2
@@ -61,6 +50,8 @@ def GaussianFilter_JY(image: np.ndarray, kernel_size: int, sigma: float) -> np.n
 
     output_image = np.clip(output_image, 0, 255)
     output_image = output_image.astype(image.dtype)
+
+    return output_image
 
 def GaussianFilter_SJ(image: np.ndarray, width: int, sigma: float) -> np.ndarray:
     center = width//2
