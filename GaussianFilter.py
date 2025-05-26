@@ -12,7 +12,7 @@ def main():
 
     kernel_size = 5
     sigma = 2
-    filtered_image = GaussianFilter(image, kernel_size, sigma)
+    filtered_image = GaussianFilter_JY(image, kernel_size, sigma)
     cv2.imshow(f"Filtered Image (k = {kernel_size}, sigma = {sigma})", filtered_image)
     filtered_image_cv = cv2.GaussianBlur(image, (kernel_size, kernel_size), sigma)
     cv2.imshow(f"OpenCV GaussianBlur (k = {kernel_size}, s = {sigma})", filtered_image_cv)
@@ -20,7 +20,7 @@ def main():
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-def GaussianFilter(image: np.ndarray, kernel_size: int, sigma: float) -> np.ndarray:
+def GaussianFilter_JY(image: np.ndarray, kernel_size: int, sigma: float) -> np.ndarray:
     # 커널 한 변 길이 검증
     if kernel_size % 2 == 0 or kernel_size <= 0:
         raise ValueError("Kernel size must be odd.")
