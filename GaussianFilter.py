@@ -34,19 +34,37 @@ def GaussianFilter_JY(image: np.ndarray, kernel_size: int, sigma: float) -> np.n
     # Gaussian 커널 정규화
     gaussian_kernel /= np.sum(gaussian_kernel)
 
-    # 이미지 패딩
-    padded_image = np.pad(image, pad_width=radius, mode='edge')
-
     # 인풋 이미지와 동일한 크기의 빈 이미지 생성
     height, width = image.shape
     output_image = np.zeros_like(image, dtype=np.float64)
 
-    # 이미지 픽셀 돌면서 convolution(실제로는 correlation) 연산 수행
-    for r in range(height):
-        for c in range(width):
-            image_patch = padded_image[r : r + kernel_size, c : c + kernel_size]
-            output_pixel = np.sum(image_patch * gaussian_kernel)
-            output_image[r, c] = output_pixel
+    # 이미지 픽셀을 순회하며 convolution(실제로는 correlation) 연산 수행
+    for r_out in range(height):
+        for c_out in range(width):
+            output_pixel_value = 0.0
+            for kr_offset in range(-radius, radius + 1):
+                for kc_offset in range(-radius, radius + 1):
+                    r_in = r_out + kr_offset
+                    c_in = c_out + kc_offset
+
+                    if r_in < 0:
+                        eff_r_in = 0
+                    elif r_in >= height:
+                        eff_r_in = height - 1
+                    else:
+                        eff_r_in = r_in
+
+                    if c_in < 0:
+                        eff_c_in = 0
+                    elif c_in >= width:
+                        eff_c_in = width - 1
+                    else:
+                        eff_c_in = c_in
+
+                    kernel_value = gaussian_kernel[kr_offset + radius, kc_offset + radius]
+                    output_pixel_value += image[eff_r_in, eff_c_in] * kernel_value
+
+            output_image[r_out, c_out] = output_pixel_value
 
     output_image = np.clip(output_image, 0, 255)
     output_image = output_image.astype(image.dtype)
