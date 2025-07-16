@@ -1,4 +1,4 @@
-# GuidedFilter_SH
+# GuidedFilter
 import cv2
 import numpy as np
 
